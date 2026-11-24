@@ -202,7 +202,7 @@ function render(){
 const hSent=h=>!!(h.sent||HLD.ST.marks[h.l]);
 const hBoatOf=h=>{const B=HLD.BOATS[h.i]||[];if(h.sent)return h.sent;const k=HLD.ST.boat[h.l];return k!=null&&B[k]?B[k][0]:''};
 const hq=x=>{const i=x.lastIndexOf(' – ');return i<0?[x,'']:[x.slice(0,i),x.slice(i+3)]};
-const telA=(n,l)=>n?`<a href="tel:${n}">📞 ${l||n}</a>`+(/^[79]/.test(n)?`<a href="https://wa.me/960${n}" target="_blank" rel="noopener">WhatsApp</a>`:''):'';
+const telA=(n,l)=>n?`<a href="tel:${n}">📞 ${l||n}</a>`+(/^[79]/.test(n)?`<a href="viber://chat?number=%2B960${n}">Viber</a>`:''):'';
 function renderHeavy(){
  const q=state.q.toLowerCase(),P=HL.filter(h=>!hSent(h)),D=HL.filter(hSent);
  $('hnp').textContent=$('htp').textContent=P.length;$('hns').textContent=$('hts').textContent=D.length;$('hni').textContent=new Set(P.map(h=>h.i)).size;
@@ -222,7 +222,7 @@ function renderHeavy(){
   for(const h of g[isl]){const on=hSent(h),mk=HLD.ST.marks[h.l],bt=hBoatOf(h),sp=HLD.SUP[h.s]||['',''],rm=HLD.ST.notes[h.l],ms=HLD.ST.msgs[h.l];
    out+=`<article class="note"><div class="nh"><span class="isl">📍 ${hl(h.i,state.q)}</span><span class="hsl">/</span><span class="hsup">${hl(h.s,state.q)}</span><span class="date"><span class="hv${on?' ok':''}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></span><span class="ref" style="width:100%">${hl('LPO/2026/'+h.l,state.q)}</span></div>
    ${!on&&bt?`<div class="meta"><span>Boat selected <strong>${esc(bt)}</strong></span></div>`:''}
-   <ul class="items">${h.t.map(x=>{const[a,b]=hq(x);return `<li><span class="t">${hl(a,state.q)}</span><span class="q">${b?'× '+esc(b):''}</span></li>`}).join('')}</ul>
+   <ul class="items">${h.t.map(x=>{const[a,b]=hq(x);return `<li><span class="t">${b?`<b>${esc(b.replace(/\b[a-z]/g,c=>c.toUpperCase()))}</b> `:''}${hl(a,state.q)}</span></li>`}).join('')}</ul>
    ${h.n?`<div class="hwarn${h.r?' r':''}">${esc(h.n)}</div>`:''}
    ${!PUBLIC&&rm?`<div class="hrem">💬 ${hl(rm,state.q)}</div>`:''}
    ${!PUBLIC&&ms?`<div class="hrem">✉ Message sent to supplier: <b>${esc(ms)}</b></div>`:''}
