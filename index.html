@@ -132,6 +132,8 @@ footer{font-size:.78rem;color:var(--muted)}
 #hsup{border-color:#c2410c}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #fm button[data-m="h"]{color:#fb923c}}
 :root[data-theme="dark"] #fm button[data-m="h"]{color:#fb923c}
+.cpy{display:inline-flex;align-items:center;gap:5px;min-height:34px;margin-top:8px;padding:0 12px;border-radius:8px;border:1.5px solid var(--accent);background:var(--card);color:var(--accent);font:600 13px var(--sans);cursor:pointer}
+.hslip .cpy{border-color:#c2410c;color:#c2410c}
 .hv.ok{color:#1d7a46;background:#dff3e6}
 .hvnote{font-size:.8rem;color:var(--muted);margin:-6px 0 0}
 </style>
@@ -205,6 +207,8 @@ $('fb').addEventListener('change',e=>{state.boat=e.target.value;state.limit=30;r
 $('list').addEventListener('click',e=>{const b=e.target.closest('.ph');if(!b)return;const d=document.createElement('div');d.id='lb';d.innerHTML=`<img src="${b.dataset.src}" alt="Photo">`;d.onclick=()=>d.remove();document.body.appendChild(d)});
 $('fm').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state.mode=b.dataset.m;state.limit=30;document.querySelectorAll('#fm button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('hvn').hidden=!state.mode;render()});
 $('hn').textContent='· '+HL.filter(h=>!(h.sent||HLD.ST.marks[h.l])).length+' pending';
+document.addEventListener('click',e=>{const b=e.target.closest('.cpy');if(!b)return;const t=decodeURIComponent(b.dataset.cpt),ok=()=>{const o=b.innerHTML;b.textContent='Copied ✓';setTimeout(()=>b.innerHTML=o,1500)};
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(ok).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(x){}a.remove();ok()})});
 $('more').addEventListener('click',()=>{state.limit+=30;render()});
 function match(n){
  if(state.day&&n.date!==state.day)return null;
@@ -229,7 +233,7 @@ function render(){
  const q=state.q;
  $('list').innerHTML=res.length?res.slice(0,state.limit).map(n=>{const c=CONTACTS[n.boat];return `<article class="note"><div class="nh"><span class="isl">${hl(n.island,q)}</span>${CODES[n.island]?`<span class="code">${CODES[n.island]}</span>`:''}<span class="ref">${hl(n.ref,q)}</span><span class="date">${n.date} · ${dayName(n.date)}</span></div>
  <div class="meta"><span>Boat <strong>${hl(n.boat,q)}</strong>${c?` · <a class="tel" href="tel:${c}">${c}</a>`:''}</span><span>Sent by <strong>${hl(n.staff,q)}</strong></span></div>
- <ul class="items">${n.shown.map(i=>`<li><span class="t">${hl(i.item,q)}</span><span class="q">× ${i.qty}</span></li>`).join('')}</ul>${(p=>p?`<button class="ph" data-src="${p[0]}" aria-label="Open photo"><img src="${p[0]}" alt="${esc(p[1])}" loading="lazy"><span>📷 Photo · ${esc(p[1])}</span></button>`:'')((PHOTOS[n.date+'|'+n.island+'|'+n.ref]||PHOTOS[n.date+'|'+n.ref]))}</article>`}).join(''):`<div class="empty">Nothing found. Try another word, like an island name, boat or LPO number.</div>`;
+ <ul class="items">${n.shown.map(i=>`<li><span class="t">${hl(i.item,q)}</span><span class="q">× ${i.qty}</span></li>`).join('')}</ul><div style="padding:0 12px 10px"><button class="cpy" data-cpt="${encodeURIComponent((/^(LPO|PTSHI|GSR|DN|FATS)/.test(n.ref)?'PO: ':'Ref: ')+n.ref+'\nItems:\n'+n.items.map(i=>i.qty+' '+i.item).join('\n'))}">📋 Copy PO &amp; items</button></div>${(p=>p?`<button class="ph" data-src="${p[0]}" aria-label="Open photo"><img src="${p[0]}" alt="${esc(p[1])}" loading="lazy"><span>📷 Photo · ${esc(p[1])}</span></button>`:'')((PHOTOS[n.date+'|'+n.island+'|'+n.ref]||PHOTOS[n.date+'|'+n.ref]))}</article>`}).join(''):`<div class="empty">Nothing found. Try another word, like an island name, boat or LPO number.</div>`;
  $('more').hidden=res.length<=state.limit;
 }
 const hSent=h=>!!(h.sent||HLD.ST.marks[h.l]);
@@ -273,6 +277,7 @@ function renderHeavy(){
    ${PUBLIC?`<div class="hlpo">LPO/2026/${esc(h.l)}</div>`:`<a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" target="_blank" rel="noopener">📄 LPO/2026/${esc(h.l)} · Open</a><a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" download="LPO-2026-${h.l}.pdf">⬇ Download</a>`}</div>
    <span class="htag ${on?'s':'p'}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></div>
    <div class="hitems">${h.t.map(x=>`<div>${hl(qf(x),state.q)}</div>`).join('')}</div>
+   <button class="cpy" data-cpt="${encodeURIComponent('PO: LPO/2026/'+h.l+'\nItems:\n'+h.t.map(qf).join('\n'))}">📋 Copy PO &amp; items</button>
    ${hChips(h,on)}
    ${h.n?`<div class="hnote ${h.r?'r':''}">${esc(h.n)}</div>`:''}
    ${!PUBLIC?`<div class="hacts">${ms?`<span class="hb m on">✉ Messaged · ${esc(ms)}</span>`:`<span class="hb m">✉ Not messaged yet</span>`}${on?`<span class="hb k on">✓ Sent${mk?' · '+esc(mk):''}</span>`:''}</div>
