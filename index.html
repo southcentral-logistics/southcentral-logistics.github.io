@@ -199,7 +199,7 @@ function drawTabs(){
 $('fd').innerHTML=`<option value="">All dates · ${DATA.reduce((s,r)=>s+r.qty,0)} items</option>`+dates.map(d=>`<option value="${d}">${d} · ${dayName(d)} · ${dayTotal(d)} items</option>`).join('');
 $('fd').addEventListener('change',e=>{state.day=e.target.value;state.limit=30;render()});
 $('fa').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;state.atoll=b.dataset.v;state.limit=30;render()});
-$('q').addEventListener('input',e=>{state.q=e.target.value.trim();state.limit=30;render()});
+$('q').addEventListener('input',e=>{state.q=e.target.value.trim();state.limit=30;render();const c=$('count'),y=c.getBoundingClientRect().top+window.scrollY-document.querySelector('.bar').offsetHeight-8;if(window.scrollY>y||c.getBoundingClientRect().top>window.innerHeight*0.6)window.scrollTo({top:Math.max(0,y)})});
 $('fi').addEventListener('change',e=>{state.isl=e.target.value;state.limit=30;render()});
 $('fb').addEventListener('change',e=>{state.boat=e.target.value;state.limit=30;render()});
 $('list').addEventListener('click',e=>{const b=e.target.closest('.ph');if(!b)return;const d=document.createElement('div');d.id='lb';d.innerHTML=`<img src="${b.dataset.src}" alt="Photo">`;d.onclick=()=>d.remove();document.body.appendChild(d)});
