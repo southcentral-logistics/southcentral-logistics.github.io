@@ -97,8 +97,8 @@ footer{font-size:.78rem;color:var(--muted)}
 .hsup{color:var(--fg);font-weight:600;font-size:1rem}.hsl{color:#d9512c;font-weight:700;margin:0 2px}
 .hwarn{margin:0 12px 8px;font-size:.82rem;padding:6px 9px;border-radius:8px;background:#fff4dc;color:#8a5c00}.hwarn.r{background:#fdebe5;color:#b3401f}
 .hrem{margin:0 12px 8px;font-size:.82rem;padding:6px 9px;border-radius:8px;background:var(--accent-soft)}
-.hboats{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-top:-2px}
-.hboats .hboat{min-width:60%}
+.hbx{display:flex;flex-direction:column;align-items:flex-end;gap:5px;padding:0 12px 10px}
+.hbx .hboat{gap:12px;padding:6px 10px}
 .hboat{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:space-between;background:var(--accent-soft);border-radius:10px;padding:8px 12px;font-size:.88rem}
 .hcall{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}.hcall a{font-size:.8rem;border:1px solid var(--line);border-radius:8px;padding:5px 10px;text-decoration:none;color:var(--accent);font-weight:500}
 .hv.ok{color:#1d7a46;background:#dff3e6}
@@ -205,6 +205,14 @@ const hSent=h=>!!(h.sent||HLD.ST.marks[h.l]);
 const hBoatOf=h=>{const B=HLD.BOATS[h.i]||[];if(h.sent)return h.sent;const k=HLD.ST.boat[h.l];return k!=null&&B[k]?B[k][0]:''};
 const hq=x=>{const i=x.lastIndexOf(' – ');return i<0?[x,'']:[x.slice(0,i),x.slice(i+3)]};
 const telA=(n,l)=>n?`<a href="tel:${n}">📞 ${l||n}</a>`+(/^[79]/.test(n)?`<a href="viber://chat?number=%2B960${n}">Viber</a>`:''):'';
+function hBoatBox(h,on,bt){
+ const B=HLD.BOATS[h.i]||[],tel=n=>CONTACTS[n]||(B.find(x=>x[0]===n)||[])[1]||{'Kaamiyaab 7':'9993282','Kaamiyaabu 7':'9993282','KANDU ROADHI':'7700053','Office Dhoani':'7909655','Black Coral':'7445429'}[n]||'';
+ let L;
+ if(h.i==='Head Office Store')L=[['🏢 Head Office Store · Ali Nazim','7766990']];
+ else if(bt)L=[['⛴ '+bt,tel(bt)]];
+ else if(B.length)L=B.map(([n,p])=>['⛴ '+n,p]);
+ else L=[['⛴ No boat yet','']];
+ return `<div class="hbx">${L.map(([n,p])=>`<div class="hboat"><span><strong>${esc(n)}</strong></span>${p?`<a class="tel" href="tel:${p}">${p}</a>`:''}</div>`).join('')}</div>`}
 function renderHeavy(){
  const q=state.q.toLowerCase(),P=HL.filter(h=>!hSent(h)),D=HL.filter(hSent);
  $('hnp').textContent=$('htp').textContent=P.length;$('hns').textContent=$('hts').textContent=D.length;$('hni').textContent=new Set(P.map(h=>h.i)).size;
@@ -223,14 +231,11 @@ function renderHeavy(){
   out+=`<h2>${esc(isl)} ${CODES[isl]?`<span class="code">${CODES[isl]}</span>`:''} <small style="color:var(--muted);font-weight:500">· ${g[isl].length} LPO</small></h2>`;
   for(const h of g[isl]){const on=hSent(h),mk=HLD.ST.marks[h.l],bt=hBoatOf(h),sp=HLD.SUP[h.s]||['',''],rm=HLD.ST.notes[h.l],ms=HLD.ST.msgs[h.l];
    out+=`<article class="note"><div class="nh"><span class="isl">📍 ${hl(h.i,state.q)}</span><span class="hsl">/</span><span class="hsup">${hl(h.s,state.q)}</span><span class="date"><span class="hv${on?' ok':''}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></span><span class="ref" style="width:100%">${hl('LPO/2026/'+h.l,state.q)}</span></div>
-   ${!on&&bt?`<div class="meta"><span>Boat selected <strong>${esc(bt)}</strong></span></div>`:''}
    <ul class="items">${h.t.map(x=>{const[a,b]=hq(x);return `<li><span class="t">${b?`<b>${esc(b.replace(/\b[a-z]/g,c=>c.toUpperCase()))}</b> `:''}${hl(a,state.q)}</span></li>`}).join('')}</ul>
    ${h.n?`<div class="hwarn${h.r?' r':''}">${esc(h.n)}</div>`:''}
    ${!PUBLIC&&rm?`<div class="hrem">💬 ${hl(rm,state.q)}</div>`:''}
    ${!PUBLIC&&ms?`<div class="hrem">✉ Message sent to supplier: <b>${esc(ms)}</b></div>`:''}
-   ${!PUBLIC&&!on&&(sp[0]||sp[1])?`<div class="hcall">${telA(sp[0],'Supplier '+sp[0])}${sp[1]?`<a href="tel:${sp[1]}">📞 ${sp[1]}</a>`:''}</div>`:''}</article>`}
-  let bt='';if(hview==='p'){const B=HLD.BOATS[isl]||[];bt+=isl==='Head Office Store'?`<div class="hboat"><span>🏢 Deliver to Head Office Store · inform Ali Nazim</span><a class="tel" href="tel:7766990">7766990</a></div>`:B.length?B.map(([n,p])=>`<div class="hboat"><span><strong>⛴ ${esc(n)}</strong></span><a class="tel" href="tel:${p}">${p}</a></div>`).join(''):`<div class="hboat"><span>⛴ No boat yet</span></div>`}
-  if(bt)out+=`<div class="hboats">${bt}</div>`;
+   ${!PUBLIC&&!on&&(sp[0]||sp[1])?`<div class="hcall">${telA(sp[0],'Supplier '+sp[0])}${sp[1]?`<a href="tel:${sp[1]}">📞 ${sp[1]}</a>`:''}</div>`:''}${hBoatBox(h,on,bt)}</article>`}
  }
  $('count').textContent=`Same list as the Heavy Load app · updated ${HL_UPDATED}`;
  $('list').innerHTML=out||`<div class="empty">Nothing here.</div>`;
