@@ -233,7 +233,7 @@ function render(){
  $('more').hidden=res.length<=state.limit;
 }
 const hSent=h=>!!(h.sent||HLD.ST.marks[h.l]);
-const hBoatOf=h=>{const B=HLD.BOATS[h.i]||[];if(h.sent)return h.sent;const k=HLD.ST.boat[h.l];return k!=null&&B[k]?B[k][0]:''};
+const hBoatOf=h=>{const B=HLD.BOATS[h.i]||[];if(h.sent)return h.sent;const k=HLD.ST.boat[h.l];return k!=null&&B[k]?B[k][0]:B.length===1&&h.i!=='Head Office Store'?B[0][0]:''};
 const hq=x=>{const i=x.lastIndexOf(' – ');return i<0?[x,'']:[x.slice(0,i),x.slice(i+3)]};
 const telV=n=>n?`<a class="hb c" href="tel:+960${n}">📞 ${n}</a>`+(/^[79]/.test(n)?`<a class="hb v" href="viber://chat?number=%2B960${n}">Viber</a>`:''):'';
 const qf=x=>{const[a,b]=hq(x);return b?b.replace(/\b[a-z]/g,c=>c.toUpperCase())+' '+a:a};
@@ -263,12 +263,12 @@ function renderHeavy(){
   h+='<h2 class="hh2">Boats and store</h2>'+Object.entries(HLD.BOATS).flatMap(([i,b])=>b.map(([n,p])=>`<div class="hslip hdir"><div><div class="hn">${esc(n)}</div><div class="hx">${esc(i)} · ${p}</div></div><div class="hacts"><a class="hb c" href="tel:+960${p}">📞 ${p}</a></div></div>`)).join('');
   $('count').textContent='';$('list').innerHTML=h;return}
  const rows=(hview==='p'?P:D).filter(h=>!hsup||h.s===hsup).filter(h=>!q||q.split(/\s+/).every(t=>[h.l,h.i,h.s,h.t.join(' '),h.n||'',HLD.ST.notes[h.l]||'',hBoatOf(h)].join(' ').toLowerCase().includes(t)));
- const g={};rows.forEach(h=>(g[h.i]=g[h.i]||[]).push(h));
+ const g={};rows.slice().sort((a,b)=>a.s.localeCompare(b.s)).forEach(h=>(g[h.s]=g[h.s]||[]).push(h));
  let out='';
- for(const isl in g){
-  out+=`<h2 class="hh2">${esc(isl)}<small>${g[isl].length} LPO</small></h2>`;
-  for(const h of g[isl]){const on=hSent(h),mk=HLD.ST.marks[h.l],sp=HLD.SUP[h.s]||['',''],rm=HLD.ST.notes[h.l],ms=HLD.ST.msgs[h.l];
-   out+=`<div class="hslip ${on?'done':''}"><div class="hhead"><div><div class="hiname">📍 ${hl(h.i,state.q)} <span class="hsl">/</span> <span class="hsname">${hl(h.s,state.q)}</span></div>
+ for(const sup in g){
+  out+=`<h2 class="hh2">${esc(sup)}<small>${g[sup].length} LPO</small></h2>`;
+  for(const h of g[sup]){const on=hSent(h),mk=HLD.ST.marks[h.l],sp=HLD.SUP[h.s]||['',''],rm=HLD.ST.notes[h.l],ms=HLD.ST.msgs[h.l];
+   out+=`<div class="hslip ${on?'done':''}"><div class="hhead"><div><div class="hiname">${hl(h.s,state.q)} <span class="hsl">/</span> <span class="hsname">📍 ${hl(h.i,state.q)}</span></div>
    ${!PUBLIC&&(sp[0]||sp[1])?`<div class="hacts" style="margin-top:6px">${telV(sp[0])}${sp[1]?`<a class="hb c" href="tel:+960${sp[1]}">📞 ${sp[1]}</a>`:''}</div>`:''}
    ${PUBLIC?`<div class="hlpo">LPO/2026/${esc(h.l)}</div>`:`<a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" target="_blank" rel="noopener">📄 LPO/2026/${esc(h.l)} · Open</a><a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" download="LPO-2026-${h.l}.pdf">⬇ Download</a>`}</div>
    <span class="htag ${on?'s':'p'}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></div>
