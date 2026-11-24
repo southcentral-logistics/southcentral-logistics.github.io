@@ -101,6 +101,16 @@ footer{font-size:.78rem;color:var(--muted)}
 .hbx .hboat{gap:12px;padding:6px 10px}
 .hboat{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:space-between;background:var(--accent-soft);border-radius:10px;padding:8px 12px;font-size:.88rem}
 .hcall{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 10px}.hcall a{font-size:.8rem;border:1px solid var(--line);border-radius:8px;padding:5px 10px;text-decoration:none;color:var(--accent);font-weight:500}
+/* Heavy Load tab colour: dark orange */
+#fm button[data-m="h"]{color:#c2410c}
+#fm button[data-m="h"][aria-pressed="true"]{background:#c2410c;color:#fff}
+#hvtop .hgauge{background:#c2410c;color:#fff}
+#hvtop .hg i{background:#fff}
+#hvtop .hseg button[aria-pressed="true"]{background:#c2410c;color:#fff}
+#hvtop .happ{border-color:#c2410c;color:#c2410c}
+#hsup{border-color:#c2410c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #fm button[data-m="h"]{color:#fb923c}}
+:root[data-theme="dark"] #fm button[data-m="h"]{color:#fb923c}
 .hv.ok{color:#1d7a46;background:#dff3e6}
 .hvnote{font-size:.8rem;color:var(--muted);margin:-6px 0 0}
 </style>
