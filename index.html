@@ -86,6 +86,7 @@ footer{font-size:.78rem;color:var(--muted)}
 .mode button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
 .mode small{font-weight:500;opacity:.85}
 .hv{font-size:.72rem;font-weight:700;color:#8a4b00;background:#ffe9c7;border-radius:6px;padding:1px 7px}
+.hv.ok{color:#1d7a46;background:#dff3e6}
 .hvnote{font-size:.8rem;color:var(--muted);margin:-6px 0 0}
 </style>
 <div class="wrap">
@@ -111,8 +112,8 @@ const DATA=[{"date": "11.11.2026", "island": "M. Kolhufushi", "ref": "LPO/2026/0
 const CONTACTS={"Office Dhoani": "7909655", "Nafa N-10": "7777937", "Maal Express N-12": "9127823", "Kaamiyaab 7": "9993282", "Black Coral": "7445429", "Ishqu Baaru": "9219100", "Mas Roadhi": "9841395", "Sea Queen": "7870330", "Laser": "9777268", "Kandu Roadhi": "7700053", "Khazana": "7891514", "Green Line": "7241234", "BONUS 2": "7583346"};
 const PHOTOS={"22.11.2026|FATS/26/00722":["photos/22-11_AA-Rasdhoo_AC.jpg","Hisense AC 24,000 BTU (indoor + outdoor unit) loaded on Laser, 22.11.2026"],"19.11.2026|LPO/2026/05120":["photos/19-11_AA-Maalhos_Davey-pump.jpg","Davey Dynaflo pump for AA. Maalhos, loaded on Mas Roadhi, 19.11.2026"],"17.11.2026|PTSHI/2026/10345":["photos/17-11_Dh-Hulhudheli_items.jpg","Dh. Hulhudheli items (A4 paper and others), loaded on DMMA Express, 17.11.2026"],"17.11.2026|Dh. Atoll (3 islands)|Uniform T-Shirt Boxes":["photos/17-11_Dh-Bandidhoo_uniform-box.jpg","Dh. Bandidhoo uniform T-shirt box, loaded on DMMA Express, 17.11.2026"]};
 const UPDATED="23.11.2026";
-const HEAVY=["04205","04301","04397","04486","04495","04506","04507","04517","04626","04627","04637","04639","04860","04898","04899","04918","05013","05044"];
-const isHeavy=r=>HEAVY.some(h=>String(r.ref).includes("LPO/2026/"+h));
+const HL=[{"l": "04626", "i": "ADh. Dhidhdhoo", "s": "Apollo Hardware", "t": ["Cement – 57 bags", "Coarse Sand – 225 bags"], "sent": ""}, {"l": "04495", "i": "ADh. Dhidhdhoo", "s": "Apollo Hardware", "t": ["Rockwool Insulation 50mm × 1.2m × 15m – 22"], "sent": ""}, {"l": "04637", "i": "ADh. Dhidhdhoo", "s": "Alia Store", "t": ["GI Square Hollow Section 3\" × 1½\" × 2mm – 30"], "sent": ""}, {"l": "04627", "i": "ADh. Dhidhdhoo", "s": "Veligaa Hardware", "t": ["GI Square Hollow Section 3\" × 1½\" × 2mm – 30"], "sent": ""}, {"l": "04507", "i": "ADh. Dhidhdhoo", "s": "Sonee Hardware", "t": ["Shera Board 4' × 8' 6mm – 54"], "sent": ""}, {"l": "04506", "i": "ADh. Dhidhdhoo", "s": "Sonee Hardware", "t": ["GI Pipe 3\" – 12"], "sent": ""}, {"l": "04639", "i": "ADh. Dhidhdhoo", "s": "Rainbow Buildware", "t": ["Roofing Sheet 20' T.Blue – 19", "Roofing Sheet 15' T.Blue – 12"], "sent": "Kandu Roadhi"}, {"l": "04486", "i": "ADh. Dhidhdhoo", "s": "STO", "t": ["Roofing Sheet 20' T.Blue – 30", "Ridge Capping 8' – 7", "Fascia Gutter 8' – 14"], "sent": ""}, {"l": "04205", "i": "ADh. Dhidhdhoo", "s": "Nalahiya Hardware", "t": ["Round Bar 6mm – 32"], "sent": ""}, {"l": "05013", "i": "F. Nilandhoo", "s": "Elm Engineering & Construction", "t": ["MS Angle 2\" – 55"], "sent": ""}, {"l": "04397", "i": "M. Veyvah", "s": "Alia Investment", "t": ["Lakudi Fathi 8\" × 2\" × 14' – 4"], "sent": ""}, {"l": "04301", "i": "M. Raiymandhoo", "s": "IHA Pvt Ltd", "t": ["SS Island Pickup 1200 kg – 1"], "sent": ""}, {"l": "04898", "i": "Head Office Store", "s": "Rainbow Roofing", "t": ["Roofing Sheet 8' – 34", "Fascia Gutter – 11", "Fascia Board – 7", "Ridge Capping – 6", "Gutter End Cap – 4", "GI Gutter Clip – 40", "Flat Sheet 3' × 8' – 22"], "sent": "Delivered to store · 23 Nov"}, {"l": "04899", "i": "Head Office Store", "s": "Steel Hardware", "t": ["GI Square Hollow Section 2\" × 4\" – 10"], "sent": ""}, {"l": "04860", "i": "Th. Vilufushi", "s": "W.E.W Maldives", "t": ["SS Flagpost 2\" × 19' – 2"], "sent": "Office Dhoani"}, {"l": "04918", "i": "F. Magoodhoo", "s": "Alia Store", "t": ["GI Pipe 3\" – 6", "GI Pipe 2\" – 6", "MS Angle 2\" – 2"], "sent": "Kaamiyaab 7"}, {"l": "05044", "i": "F. Nilandhoo", "s": "Elm Engineering & Construction", "t": ["MS Thread Pipe Fitting 1\" – 50"], "sent": "Kaamiyaab 7"}, {"l": "04517", "i": "ADh. Dhangethi", "s": "Apollo Hardware", "t": ["GI Pipe 1½\" – 12"], "sent": "Black Coral"}];
+const HL_UPDATED="24.11.2026";
 const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const dkey=d=>d.split('.').reverse().join('');
 function dayName(d){const[a,b,c]=d.split('.').map(Number);return days[new Date(c,b-1,a).getDay()]}
@@ -138,7 +139,8 @@ $('fb').innerHTML='<option value="">All boats</option>'+boats.map(b=>`<option>${
 function dayTotal(d){return DATA.filter(r=>r.date===d).reduce((s,r)=>s+r.qty,0)}
 function drawTabs(){
  const tab=(v,top,sub,on)=>`<button class="tab" role="tab" data-v="${esc(v)}" aria-selected="${on}">${top}${sub!==''?`<small>${sub}</small>`:''}</button>`;
- const inDay=DATA.filter(r=>(!state.day||r.date===state.day)&&(!state.mode||isHeavy(r)));
+ if(state.mode){const c=a=>HL.filter(h=>a===''||atollOf(h.i)===a).length;const list=ATOLLS.filter(([a])=>a!=='Other'||c('Other'));$('fa').innerHTML=`<button class="tab" role="tab" data-v="" aria-selected="${state.atoll===''}"><b>All</b><small>${c('')}</small></button>`+list.map(([a,n])=>{const k=c(a);return `<button class="tab" role="tab" data-v="${a}" data-empty="${k?0:1}" aria-selected="${state.atoll===a}"><b>${a==='Other'?'Store':(a==='AA.'||a==='ADh.')?a:`<span class="fn">${n}</span><span class="sn">${a}</span>`}</b><small>${k}</small></button>`}).join('');return}
+ const inDay=DATA.filter(r=>!state.day||r.date===state.day);
  const sum=a=>inDay.filter(r=>a===''||atollOf(r.island)===a).reduce((s,r)=>s+r.qty,0);
  const list=ATOLLS.filter(([a])=>a!=='Other'||inDay.some(r=>atollOf(r.island)==='Other'));
  $('fa').innerHTML=`<button class="tab" role="tab" data-v="" aria-selected="${state.atoll===''}"><b>All</b><small>${sum('')}</small></button>`+list.map(([a,n])=>{const c=sum(a);return `<button class="tab" role="tab" data-v="${a}" data-empty="${c?0:1}" aria-selected="${state.atoll===a}" title="${a==='Other'?'K. / South Central':n}"><b>${a==='Other'?'Other':(a==='AA.'||a==='ADh.')?a:`<span class="fn">${n}</span><span class="sn">${a}</span>`}</b><small>${c}</small></button>`}).join('');
@@ -151,10 +153,9 @@ $('fi').addEventListener('change',e=>{state.isl=e.target.value;state.limit=30;re
 $('fb').addEventListener('change',e=>{state.boat=e.target.value;state.limit=30;render()});
 $('list').addEventListener('click',e=>{const b=e.target.closest('.ph');if(!b)return;const d=document.createElement('div');d.id='lb';d.innerHTML=`<img src="${b.dataset.src}" alt="Photo">`;d.onclick=()=>d.remove();document.body.appendChild(d)});
 $('fm').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state.mode=b.dataset.m;state.limit=30;document.querySelectorAll('#fm button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('hvn').hidden=!state.mode;render()});
-$('hn').textContent='· '+notes.filter(isHeavy).length;
+$('hn').textContent='· '+HL.length;
 $('more').addEventListener('click',()=>{state.limit+=30;render()});
 function match(n){
- if(state.mode&&!isHeavy(n))return null;
  if(state.day&&n.date!==state.day)return null;
  if(state.atoll&&atollOf(n.island)!==state.atoll)return null;
  if(state.isl&&n.island!==state.isl)return null;
@@ -167,16 +168,30 @@ function match(n){
 }
 function render(){
  drawTabs();
+ ['fd','fi','fb'].forEach(x=>$(x).hidden=!!state.mode);$('fi').parentNode.hidden=!!state.mode;
+ if(state.mode){renderHeavy();return}
  const res=[];notes.forEach(n=>{const its=match(n);if(its)res.push({...n,shown:its})});
  const items=res.reduce((s,n)=>s+n.shown.reduce((a,i)=>a+i.qty,0),0);
  const st=[[items,'Items'],[res.length,'Notes'],[new Set(res.map(n=>n.island)).size,'Islands'],[new Set(res.map(n=>n.boat)).size,'Boats']];
  $('stats').innerHTML=st.map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
  $('count').textContent=state.mode||state.q||state.day||state.atoll||state.isl||state.boat?`${res.length} note${res.length==1?'':'s'} found`:`All notes, newest first`;
  const q=state.q;
- $('list').innerHTML=res.length?res.slice(0,state.limit).map(n=>{const c=CONTACTS[n.boat];return `<article class="note"><div class="nh"><span class="isl">${hl(n.island,q)}</span>${CODES[n.island]?`<span class="code">${CODES[n.island]}</span>`:''}${isHeavy(n)?'<span class="hv">Heavy Load</span>':''}<span class="ref">${hl(n.ref,q)}</span><span class="date">${n.date} · ${dayName(n.date)}</span></div>
+ $('list').innerHTML=res.length?res.slice(0,state.limit).map(n=>{const c=CONTACTS[n.boat];return `<article class="note"><div class="nh"><span class="isl">${hl(n.island,q)}</span>${CODES[n.island]?`<span class="code">${CODES[n.island]}</span>`:''}<span class="ref">${hl(n.ref,q)}</span><span class="date">${n.date} · ${dayName(n.date)}</span></div>
  <div class="meta"><span>Boat <strong>${hl(n.boat,q)}</strong>${c?` · <a class="tel" href="tel:${c}">${c}</a>`:''}</span><span>Sent by <strong>${hl(n.staff,q)}</strong></span></div>
  <ul class="items">${n.shown.map(i=>`<li><span class="t">${hl(i.item,q)}</span><span class="q">× ${i.qty}</span></li>`).join('')}</ul>${(p=>p?`<button class="ph" data-src="${p[0]}" aria-label="Open photo"><img src="${p[0]}" alt="${esc(p[1])}" loading="lazy"><span>📷 Photo · ${esc(p[1])}</span></button>`:'')((PHOTOS[n.date+'|'+n.island+'|'+n.ref]||PHOTOS[n.date+'|'+n.ref]))}</article>`}).join(''):`<div class="empty">Nothing found. Try another word, like an island name, boat or LPO number.</div>`;
  $('more').hidden=res.length<=state.limit;
+}
+function renderHeavy(){
+ const q=state.q.toLowerCase();
+ const res=HL.filter(h=>(!state.atoll||atollOf(h.i)===state.atoll)&&(!q||q.split(/\s+/).every(t=>[h.l,h.i,h.s,h.sent,h.t.join(' ')].join(' ').toLowerCase().includes(t))));
+ res.sort((a,b)=>(!!a.sent-!!b.sent)||a.i.localeCompare(b.i));
+ const sent=res.filter(h=>h.sent).length;
+ $('stats').innerHTML=[[res.length,'LPOs'],[res.length-sent,'Pending'],[sent,'Sent'],[new Set(res.map(h=>h.i)).size,'Islands']].map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+ $('count').textContent=`Heavy load LPOs · updated ${HL_UPDATED} · pending first`;
+ $('list').innerHTML=res.length?res.map(h=>{const c=CONTACTS[h.sent];return `<article class="note"><div class="nh"><span class="isl">${hl(h.i,state.q)}</span>${CODES[h.i]?`<span class="code">${CODES[h.i]}</span>`:''}<span class="ref">${hl('LPO/2026/'+h.l,state.q)}</span><span class="date"><span class="hv${h.sent?' ok':''}">${h.sent?'Sent':'Pending'}</span></span></div>
+ <div class="meta"><span>Supplier <strong>${hl(h.s,state.q)}</strong></span>${h.sent?`<span>${h.i==='Head Office Store'?'':'Boat '}<strong>${hl(h.sent,state.q)}</strong>${c?` · <a class="tel" href="tel:${c}">${c}</a>`:''}</span>`:''}</div>
+ <ul class="items">${h.t.map(x=>{const k=x.lastIndexOf(' – ');return `<li><span class="t">${hl(k<0?x:x.slice(0,k),state.q)}</span><span class="q">${k<0?'':'× '+esc(x.slice(k+3))}</span></li>`}).join('')}</ul></article>`}).join(''):`<div class="empty">No heavy load LPO found.</div>`;
+ $('more').hidden=true;
 }
 // boats directory
 const bstat={};DATA.forEach(r=>{(bstat[r.boat]??={isl:new Set(),last:'',n:0});bstat[r.boat].isl.add(r.island);bstat[r.boat].n+=r.qty;if(dkey(r.date)>dkey(bstat[r.boat].last||'0.0.0'))bstat[r.boat].last=r.date});
