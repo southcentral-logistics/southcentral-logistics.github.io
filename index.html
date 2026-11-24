@@ -232,7 +232,7 @@ function render(){
  $('stats').innerHTML=st.map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
  $('count').textContent=state.mode||state.q||state.day||state.atoll||state.isl||state.boat?`${res.length} note${res.length==1?'':'s'} found`:`All notes, newest first`;
  const q=state.q;
- $('list').innerHTML=res.length?res.slice(0,state.limit).map(n=>{const c=CONTACTS[n.boat];return `<article class="note"><div class="nh"><span class="isl">${hl(n.island,q)}</span>${CODES[n.island]?`<span class="code">${CODES[n.island]}</span>`:''}<button class="cpy" data-cpt="${encodeURIComponent((/^(LPO|PTSHI|GSR|DN|FATS)/.test(n.ref)?'PO: ':'Ref: ')+n.ref+'\nItems:\n'+n.items.map(i=>i.qty+' '+i.item).join('\n'))}" title="Copy PO and items">📋 Copy</button><span class="ref">${hl(n.ref,q)}</span><span class="date">${n.date} · ${dayName(n.date)}</span></div>
+ $('list').innerHTML=res.length?res.slice(0,state.limit).map(n=>{const c=CONTACTS[n.boat];return `<article class="note"><div class="nh"><span class="isl">${hl(n.island,q)}</span>${CODES[n.island]?`<span class="code">${CODES[n.island]}</span>`:''}<span class="ref">${hl(n.ref,q)}</span><button class="cpy" data-cpt="${encodeURIComponent((/^(LPO|PTSHI|GSR|DN|FATS)/.test(n.ref)?'PO: ':'Ref: ')+n.ref+'\nItems:\n'+n.items.map(i=>i.qty+' '+i.item).join('\n')+'\n\nBoat: '+n.boat+(CONTACTS[n.boat]?'\nContact: '+CONTACTS[n.boat]:''))}" title="Copy PO, items and boat">📋 Copy</button><span class="date">${n.date} · ${dayName(n.date)}</span></div>
  <div class="meta"><span>Boat <strong>${hl(n.boat,q)}</strong>${c?` · <a class="tel" href="tel:${c}">${c}</a>`:''}</span><span>Sent by <strong>${hl(n.staff,q)}</strong></span></div>
  <ul class="items">${n.shown.map(i=>`<li><span class="t">${hl(i.item,q)}</span><span class="q">× ${i.qty}</span></li>`).join('')}</ul>${(p=>p?`<button class="ph" data-src="${p[0]}" aria-label="Open photo"><img src="${p[0]}" alt="${esc(p[1])}" loading="lazy"><span>📷 Photo · ${esc(p[1])}</span></button>`:'')((PHOTOS[n.date+'|'+n.island+'|'+n.ref]||PHOTOS[n.date+'|'+n.ref]))}</article>`}).join(''):`<div class="empty">Nothing found. Try another word, like an island name, boat or LPO number.</div>`;
  $('more').hidden=res.length<=state.limit;
@@ -257,6 +257,9 @@ function hChips(h,on){
  const B=HLD.BOATS[h.i]||[];if(!B.length)return `<div class="hmlab">Boat</div><div class="hchips"><span class="hchip">⛴ No boat yet for ${esc(h.i)}</span></div>`;
  const s=hBoatOf(h);
  return `<div class="hmlab">Boat for ${esc(h.i)}</div><div class="hchips">${B.map(([n,p])=>`<a class="hchip ${s===n?'sel':s?'dull':''}" href="tel:${p}">⛴ ${esc(n)} · ${p}</a>`).join('')}</div>`}
+function hCopy(h){const on=hSent(h),b=h.i==='Head Office Store'?'':(h.sent||hBoatOf(h));let t='PO: LPO/2026/'+h.l+'\nItems:\n'+h.t.map(qf).join('\n')+'\n\nIsland: '+h.i;
+ if(h.i==='Head Office Store')t+='\nContact: Ali Nazim – 7766990';else if(b)t+='\nBoat Name: '+b+(hBoatT(b)?'\nContact: '+hBoatT(b):'');else{const B=HLD.BOATS[h.i]||[];t+=B.length?'\nBoat Name: '+B.map(([n,p])=>n+' ('+p+')').join(' / '):'\nBoat Name: Will be informed soon'}
+ return t}
 function renderHeavy(){
  const q=state.q.toLowerCase(),P=HL.filter(h=>!hSent(h)),D=HL.filter(hSent);
  $('hnp').textContent=$('htp').textContent=P.length;$('hns').textContent=$('hts').textContent=D.length;$('hni').textContent=new Set(P.map(h=>h.i)).size;
@@ -275,7 +278,7 @@ function renderHeavy(){
   for(const h of g[sup]){const on=hSent(h),mk=HLD.ST.marks[h.l],sp=HLD.SUP[h.s]||['',''],rm=HLD.ST.notes[h.l],ms=HLD.ST.msgs[h.l];
    out+=`<div class="hslip ${on?'done':''}"><div class="hhead"><div><div class="hiname">${hl(h.s,state.q)} <span class="hsl">/</span> <span class="hsname">📍 ${hl(h.i,state.q)}</span></div>
    ${!PUBLIC&&(sp[0]||sp[1])?`<div class="hacts" style="margin-top:6px">${telV(sp[0])}${sp[1]?`<a class="hb c" href="tel:+960${sp[1]}">📞 ${sp[1]}</a>`:''}</div>`:''}
-   <div class="hporow"><button class="cpy" data-cpt="${encodeURIComponent('PO: LPO/2026/'+h.l+'\nItems:\n'+h.t.map(qf).join('\n'))}" title="Copy PO and items">📋 Copy</button>${PUBLIC?`<span class="hlpo">LPO/2026/${esc(h.l)}</span>`:`<a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" target="_blank" rel="noopener">📄 LPO/2026/${esc(h.l)}</a><a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" download="LPO-2026-${h.l}.pdf"title="Download" aria-label="Download">⬇</a>`}</div></div>
+   <div class="hporow">${PUBLIC?`<span class="hlpo">LPO/2026/${esc(h.l)}</span><button class="cpy" data-cpt="${encodeURIComponent(hCopy(h))}" title="Copy PO, items and boat">📋 Copy</button>`:`<a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" target="_blank" rel="noopener">📄 LPO/2026/${esc(h.l)}</a><button class="cpy" data-cpt="${encodeURIComponent(hCopy(h))}" title="Copy PO, items and boat">📋 Copy</button><a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" download="LPO-2026-${h.l}.pdf"title="Download" aria-label="Download">⬇</a>`}</div></div>
    <span class="htag ${on?'s':'p'}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></div>
    <div class="hitems">${h.t.map(x=>`<div>${hl(qf(x),state.q)}</div>`).join('')}</div>
    ${hChips(h,on)}
