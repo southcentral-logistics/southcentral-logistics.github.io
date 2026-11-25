@@ -139,6 +139,19 @@ button.hchip{cursor:pointer;font-family:var(--sans)}
 #hvtop .hseg button[aria-pressed="true"]{background:#c2410c;color:#fff}
 #hvtop .happ{border-color:#c2410c;color:#c2410c}
 #hsup{border-color:#c2410c}
+/* Heavy Load header: compact, stays at the top */
+#hvtop{display:flex;flex-direction:column;gap:6px}
+#hvtop .hseg{margin-top:0}#hvtop .hseg button{padding:8px 2px;font-size:.84rem}
+#hvtop .hseg em{margin-left:2px;padding:0 5px}
+#hvtop .hg{height:5px;background:var(--line)}#hvtop .hg i{background:#c2410c}
+.hrow{display:flex;gap:6px;align-items:center}.hrow #hsup{flex:1;min-width:0;margin:0}
+.hrow .hgrp{margin:0;flex:none}
+#hvtop .hseg button[data-v="h"][aria-pressed="true"]{background:#6b7280}
+.htag.h{background:#eceef1;color:#4b5563}
+.hslip.hold{border-left:4px solid #9ca3af}
+.hb.ho.on{background:#eceef1;color:#374151;border-color:#9ca3af}
+.bar{box-shadow:0 6px 8px -8px rgba(0,0,0,.25)}
+
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #fm button[data-m="h"]{color:#fb923c}}
 :root[data-theme="dark"] #fm button[data-m="h"]{color:#fb923c}
 .cpy{display:inline-flex;align-items:center;gap:3px;height:24px;padding:0 7px;border-radius:6px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font:600 11.5px var(--sans);cursor:pointer;vertical-align:middle}
@@ -152,10 +165,9 @@ button.hchip{cursor:pointer;font-family:var(--sans)}
 <div class="bar">
 <input id="q" type="search" placeholder="Search item, island, boat, LPO, GSR…" autocomplete="off">
 <div class="mode" id="fm"><button data-m="h" aria-pressed="false">Heavy Load <small id="hn"></small></button><button data-m="" aria-pressed="true">All items</button></div>
-<select id="fd" aria-label="Date" class="daysel"></select>
+<div id="hvtop" hidden=""><div class="hseg" id="hseg"><button data-v="p" aria-pressed="true">Pending <em id="htp"></em></button><button data-v="h" aria-pressed="false">On hold <em id="hth"></em></button><button data-v="s" aria-pressed="false">Sent <em id="hts"></em></button><button data-v="c" aria-pressed="false">Contacts</button></div><div class="hg"><i id="hgi"></i></div><div class="hrow"><select id="hsup" class="daysel" aria-label="Supplier"></select><div class="hgrp" id="hgrp"><button data-g="s" aria-pressed="true">Supplier</button><button data-g="b" aria-pressed="false">Boat</button></div></div><a class="happ" id="happ" target="_blank" rel="noopener" hidden></a></div><select id="fd" aria-label="Date" class="daysel"></select>
 <div class="filters"><select id="fi" aria-label="Island"></select><select id="fb" aria-label="Boat"></select></div>
 </div>
-<div id="hvtop" hidden=""><div class="hgauge"><div class="hg"><i id="hgi"></i></div><div class="hnums"><span><b id="hnp">0</b> pending</span><span><b id="hni">0</b> islands</span><span><b id="hns">0</b> sent</span></div></div><div class="hseg" id="hseg"><button data-v="p" aria-pressed="true">Pending <em id="htp"></em></button><button data-v="s" aria-pressed="false">Sent <em id="hts"></em></button><button data-v="c" aria-pressed="false">Contacts</button></div><select id="hsup" class="daysel" aria-label="Supplier" style="margin-top:8px"></select><div class="hgrp" id="hgrp">Group by <button data-g="s" aria-pressed="true">Supplier</button><button data-g="b" aria-pressed="false">Boat</button></div><a class="happ" id="happ" target="_blank" rel="noopener">✎ Open Heavy Load app to update</a></div>
 <div class="atolls" id="fa" role="tablist" aria-label="Atoll"></div>
 <p class="hvnote" id="hvn" hidden="">Heavy Load: the supplier sends the goods straight to the boat, because the Head Office store has no space for them.</p>
 <div class="stats" id="stats"></div>
@@ -166,7 +178,7 @@ button.hchip{cursor:pointer;font-family:var(--sans)}
 <div class="boats" id="boats"></div>
 <footer id="foot"></footer>
 </div>
-<script id="hstate" type="application/json">{"marks": {"04898": "23 Nov 19:32", "04637": "24 Nov 11:35", "04899": "24 Nov 13:32", "04507": "24 Nov 18:35", "04205": "24 Nov 19:37"}, "msgs": {"04899": "23 Nov 09:55", "04626": "23 Nov 09:56"}, "rems": {}, "added": [], "boat": {"04205": 0, "04495": 0, "04637": 0, "04507": 0, "04486": 1, "04627": 0, "04506": 0}, "links": {}, "loc": {}, "notes": {}, "act": {"04637": {"t": 1795502100000, "w": "Loaded to KANDU ROADHI"}, "04486": {"t": 1795577838103, "w": "Boat selected"}, "04495": {"t": 1795498740000, "w": "Loaded to KANDU ROADHI"}, "04899": {"t": 1795509147174, "w": "Marked sent"}, "04507": {"t": 1795527300000, "w": "Loaded to KANDU ROADHI"}, "04205": {"t": 1795531063005, "w": "Marked sent"}, "04627": {"t": 1795578883927, "w": "Boat selected"}, "04506": {"t": 1795578888512, "w": "Boat selected"}}}</script>
+<script id="hstate" type="application/json">{"marks": {"04898": "23 Nov 19:32", "04637": "24 Nov 11:35", "04899": "24 Nov 13:32", "04507": "24 Nov 18:35", "04205": "24 Nov 19:37"}, "msgs": {"04899": "23 Nov 09:55", "04626": "23 Nov 09:56"}, "rems": {}, "added": [], "boat": {"04205": 0, "04495": 0, "04637": 0, "04507": 0, "04486": 1, "04627": 0, "04506": 0}, "links": {}, "loc": {}, "notes": {}, "act": {"04637": {"t": 1795502100000, "w": "Loaded to KANDU ROADHI"}, "04486": {"t": 1795577838103, "w": "Boat selected"}, "04495": {"t": 1795498740000, "w": "Loaded to KANDU ROADHI"}, "04899": {"t": 1795509147174, "w": "Marked sent"}, "04507": {"t": 1795527300000, "w": "Loaded to KANDU ROADHI"}, "04205": {"t": 1795531063005, "w": "Marked sent"}, "04627": {"t": 1795578883927, "w": "Boat selected"}, "04506": {"t": 1795606020000, "w": "Put on hold – out of stock"}}, "hold": {"04506": "25 Nov 16:27"}}</script>
 <script>
 const SRC_BODY=document.body.innerHTML;
 const SKEL="<!doctype html><html><head><meta charset=utf8><meta name=viewport content=\"width=device-width,initial-scale=1,viewport-fit=cover\"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>";
@@ -180,7 +192,7 @@ const HLD={"BOATS": {"ADh. Dhidhdhoo": [["KANDU ROADHI", "7700053"], ["Khazana",
 const HL_UPDATED="24.11.2026";
 const PUBLIC=true;
 const HL_APP="https://claude.ai/artifact/RaZ42kiXmFGRyXde3e8XrD";
-for(const k of ['marks','msgs','rems','boat','links','loc','notes'])HST[k]=HST[k]||{};HST.added=HST.added||[];
+for(const k of ['marks','msgs','rems','boat','links','loc','notes','hold'])HST[k]=HST[k]||{};HST.added=HST.added||[];
 HLD.ST=HST;
 const HL=HLD.BASE.concat(HST.added);
 for(const a of HST.added)if(a.p&&!HLD.SUP[a.s])HLD.SUP[a.s]=[a.p,''];
@@ -230,7 +242,7 @@ $('fi').addEventListener('change',e=>{state.isl=e.target.value;state.limit=30;re
 $('fb').addEventListener('change',e=>{state.boat=e.target.value;state.limit=30;render()});
 $('list').addEventListener('click',e=>{const b=e.target.closest('.ph');if(!b)return;const d=document.createElement('div');d.id='lb';d.innerHTML=`<img src="${b.dataset.src}" alt="Photo">`;d.onclick=()=>d.remove();document.body.appendChild(d)});
 $('fm').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;state.mode=b.dataset.m;state.limit=30;document.querySelectorAll('#fm button').forEach(x=>x.setAttribute('aria-pressed',x===b));$('hvn').hidden=!state.mode;render()});
-$('hn').textContent='· '+HL.filter(h=>!(h.sent||HLD.ST.marks[h.l])).length+' pending';
+$('hn').textContent='· '+HL.filter(h=>!(h.sent||HLD.ST.marks[h.l]||(HLD.ST.hold||{})[h.l])).length+' pending';
 document.addEventListener('click',e=>{const b=e.target.closest('.cpy');if(!b)return;const t=decodeURIComponent(b.dataset.cpt),ok=()=>{const o=b.innerHTML;b.textContent='Copied ✓';setTimeout(()=>b.innerHTML=o,1500)};
  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(ok).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(x){}a.remove();ok()})});
 $('more').addEventListener('click',()=>{state.limit+=30;render()});
@@ -261,6 +273,7 @@ function render(){
  $('more').hidden=res.length<=state.limit;
 }
 const hSent=h=>!!(h.sent||HLD.ST.marks[h.l]);
+const hHold=h=>!hSent(h)&&!!(HLD.ST.hold||{})[h.l];
 const hBoatOf=h=>{const B=HLD.BOATS[h.i]||[];if(h.sent)return h.sent;const k=HLD.ST.boat[h.l];return k!=null&&B[k]?B[k][0]:B.length===1&&h.i!=='Head Office Store'?B[0][0]:''};
 const hq=x=>{const i=x.lastIndexOf(' – ');return i<0?[x,'']:[x.slice(0,i),x.slice(i+3)]};
 const telV=n=>n?`<a class="hb c" href="tel:+960${n}">📞 ${n}</a>`+(/^[79]/.test(n)?`<a class="hb v" href="viber://chat?number=%2B960${n}">Viber</a>`:''):'';
@@ -284,16 +297,16 @@ function hCopy(h){const on=hSent(h),b=h.i==='Head Office Store'?'':(h.sent||hBoa
  if(h.i==='Head Office Store')t+='\nContact: Ali Nazim – 7766990';else if(b)t+='\nBoat Name: '+b+(hBoatT(b)?'\nContact: '+hBoatT(b):'');else{const B=HLD.BOATS[h.i]||[];t+=B.length?'\nBoat Name: '+B.map(([n,p])=>n+' ('+p+')').join(' / '):'\nBoat Name: Will be informed soon'}
  return t}
 function renderHeavy(){
- const q=state.q.toLowerCase(),P=HL.filter(h=>!hSent(h)),D=HL.filter(hSent);
- $('hnp').textContent=$('htp').textContent=P.length;$('hns').textContent=$('hts').textContent=D.length;$('hni').textContent=new Set(P.map(h=>h.i)).size;
+ const q=state.q.toLowerCase(),P=HL.filter(h=>!hSent(h)&&!hHold(h)),D=HL.filter(hSent),H=HL.filter(hHold);
+ $('htp').textContent=P.length;$('hts').textContent=D.length;$('hth').textContent=H.length;
  $('hgi').style.width=Math.round(D.length/HL.length*100)+'%';
  $('happ').hidden=true;$('happ').href=HL_APP;$('more').hidden=true;
- {const L=hview==='p'?P:hview==='s'?D:HL,cnt=n=>L.filter(h=>h.s===n).length,sups=[...new Set(HL.map(h=>h.s))].sort();$('hsup').hidden=hview==='c';$('hgrp').hidden=hview==='c';$('hsup').innerHTML=`<option value="">All suppliers · ${L.length} LPO</option>`+sups.map(n=>`<option value="${esc(n)}"${n===hsup?' selected':''}>${esc(n)} · ${cnt(n)} LPO</option>`).join('')}
+ {const L=hview==='p'?P:hview==='s'?D:hview==='h'?H:HL,cnt=n=>L.filter(h=>h.s===n).length,sups=[...new Set(HL.map(h=>h.s))].sort();$('hsup').hidden=hview==='c';$('hgrp').hidden=hview==='c';$('hsup').innerHTML=`<option value="">All suppliers · ${L.length} LPO</option>`+sups.map(n=>`<option value="${esc(n)}"${n===hsup?' selected':''}>${esc(n)} · ${cnt(n)} LPO</option>`).join('')}
  if(hview==='c'){let h='';
   if(!PUBLIC)h+='<h2 class="hh2">Suppliers</h2>'+Object.entries(HLD.SUP).filter(([n])=>!q||n.toLowerCase().includes(q)).map(([n,[m,l]])=>`<div class="hslip hdir"><div><div class="hn">${esc(n)}</div><div class="hx">${[m,l].filter(Boolean).join(' / ')}</div></div><div class="hacts">${telV(m)}${l?`<a class="hb c" href="tel:+960${l}">📞 ${l}</a>`:''}</div></div>`).join('');
   h+='<h2 class="hh2">Boats and store</h2>'+Object.entries(HLD.BOATS).flatMap(([i,b])=>b.map(([n,p])=>`<div class="hslip hdir"><div><div class="hn">${esc(n)}</div><div class="hx">${esc(i)} · ${p}</div></div><div class="hacts"><a class="hb c" href="tel:+960${p}">📞 ${p}</a></div></div>`)).join('');
   $('count').textContent='';$('list').innerHTML=h;return}
- const rows=(hview==='p'?P:D).filter(h=>!hsup||h.s===hsup).filter(h=>!q||q.split(/\s+/).every(t=>[h.l,h.i,h.s,h.t.join(' '),h.n||'',hRem(h.l),hBoatOf(h)].join(' ').toLowerCase().includes(t)));
+ const rows=(hview==='p'?P:hview==='h'?H:D).filter(h=>!hsup||h.s===hsup).filter(h=>!q||q.split(/\s+/).every(t=>[h.l,h.i,h.s,h.t.join(' '),h.n||'',hRem(h.l),hBoatOf(h)].join(' ').toLowerCase().includes(t)));
  const gk=h=>hgroup==='b'?(h.i==='Head Office Store'?'🏢 Head Office Store':(h.sent||hBoatOf(h))?'⛴ '+(h.sent||hBoatOf(h)):'⛴ No boat selected'):h.s;
  const lt=h=>{const x=hLast(h);return x?x.t:0};
  const g={};rows.slice().sort((a,b)=>lt(b)-lt(a)||a.s.localeCompare(b.s)).forEach(h=>(g[gk(h)]=g[gk(h)]||[]).push(h));
@@ -302,15 +315,15 @@ function renderHeavy(){
  for(const sup of order){
   out+=`<h2 class="hh2">${esc(sup)}<small>${g[sup].length} LPO</small></h2>`;
   for(const h of g[sup]){const on=hSent(h),mk=HLD.ST.marks[h.l],sp=HLD.SUP[h.s]||[h.p||'',''],rm=hRem(h.l),ms=HLD.ST.msgs[h.l];
-   out+=`<div class="hslip ${on?'done':''}"><div class="hhead"><div><div class="hiname">${hl(h.s,state.q)} <span class="hsl">/</span> <span class="hsname">📍 ${hl(h.i,state.q)}</span></div>
+   const ho=hHold(h);out+=`<div class="hslip ${on?'done':ho?'hold':''}"><div class="hhead"><div><div class="hiname">${hl(h.s,state.q)} <span class="hsl">/</span> <span class="hsname">📍 ${hl(h.i,state.q)}</span></div>
    ${!PUBLIC&&(sp[0]||sp[1])?`<div class="hacts" style="margin-top:6px">${telV(sp[0])}${sp[1]?`<a class="hb c" href="tel:+960${sp[1]}">📞 ${sp[1]}</a>`:''}</div>`:''}
    <div class="hporow">${PUBLIC?`<span class="hlpo">LPO/2026/${esc(h.l)}</span><button class="cpy" data-cpt="${encodeURIComponent(hCopy(h))}" title="Copy PO, items and boat">📋 Copy</button>`:!HLD.BASE.some(x=>x.l===h.l)?`<span class="hlpo">LPO/2026/${esc(h.l)}</span><button class="cpy" data-cpt="${encodeURIComponent(hCopy(h))}" title="Copy PO, items and boat">📋 Copy</button>`:`<a class="hlpo po" href="po/LPO-2026-${h.l}.pdf" target="_blank" rel="noopener">📄 LPO/2026/${esc(h.l)}</a><button class="cpy" data-cpt="${encodeURIComponent(hCopy(h))}" title="Copy PO, items and boat">📋 Copy</button><button class="hlpo po" data-hdl="${h.l}"title="Download" aria-label="Download">⬇</button>`}</div></div>
-   <span class="htag ${on?'s':'p'}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):'Pending'}</span></div>
+   <span class="htag ${on?'s':ho?'h':'p'}">${on?'Sent'+(h.sent?' · '+esc(h.sent):mk?' · '+esc(mk):''):ho?'On hold · '+esc(HLD.ST.hold[h.l]):'Pending'}</span></div>
    ${(x=>x?`<div class="hlast">🕘 Last: ${esc(x.w)} · ${hFmt(x.t)}</div>`:'')(hLast(h))}
    <div class="hitems">${h.t.map(x=>`<div>${hl(qf(x),state.q)}</div>`).join('')}</div>
    ${hChips(h,on)}
    ${h.n?`<div class="hnote ${h.r?'r':''}">${esc(h.n)}</div>`:''}
-   ${!PUBLIC?`<div class="hacts"><button class="hb m ${ms?'on':''}" data-hms="${h.l}">${ms?'✉ Messaged · '+esc(ms):'✉ Message sent'}</button>${h.sent?'':`<button class="hb k ${on?'on':''}" data-hmk="${h.l}">${on?'✓ Sent'+(mk?' · '+esc(mk):''):'✓ Mark sent'}</button>`}</div>
+   ${!PUBLIC?`<div class="hacts"><button class="hb m ${ms?'on':''}" data-hms="${h.l}">${ms?'✉ Messaged · '+esc(ms):'✉ Message sent'}</button>${on?'':`<button class="hb ho ${ho?'on':''}" data-hho="${h.l}">${ho?'⏸ On hold · tap to undo':'⏸ Put on hold'}</button>`}${h.sent?'':`<button class="hb k ${on?'on':''}" data-hmk="${h.l}">${on?'✓ Sent'+(mk?' · '+esc(mk):''):'✓ Mark sent'}</button>`}</div>
    <div class="hmlab">Remarks · tap to edit</div><textarea class="hrem3" data-hrm="${h.l}" rows="2" placeholder="Supplier reply – e.g. will deliver today 2pm">${esc(rm)}</textarea>
    ${on?'':`<button class="hb mt ${HOPEN.has(h.l)?'on':''}" data-hmt="${h.l}">${HOPEN.has(h.l)?'✕ Hide message':'✉ Message to supplier'}</button>`}
    ${on||!HOPEN.has(h.l)?'':`<div class="hmlab">Message to supplier</div><textarea class="hmsg" id="hm${h.l}" data-hrr="${h.l}">${esc(hMsg(h))}</textarea><div class="hacts"><button class="hb c" data-hcp="${h.l}">Copy</button>${HST.rems[h.l]?`<button class="hb" data-hrs="${h.l}">Reset</button>`:''}${sp[0]?`<button class="hb v" data-hvb="${h.l}" data-n="${sp[0]}">Copy + open Viber</button>`:''}</div>`}`:''}
@@ -325,6 +338,7 @@ $('list').addEventListener('click',e=>{
  const bt=e.target.closest('[data-hbt]');if(bt){const l=bt.dataset.hbt,k=+bt.dataset.hbk;HST.boat[l]===k?delete HST.boat[l]:HST.boat[l]=k;hAct(l,'Boat selected');delete HST.rems[l];render();hSave();return}
  const hm=e.target.closest('[data-hms]');if(hm){const l=hm.dataset.hms;HST.msgs[l]?(delete HST.msgs[l],hAct(l,'Message unmarked')):(HST.msgs[l]=hStamp(),hAct(l,'Message sent'));render();hSave();return}
  const hk=e.target.closest('[data-hmk]');if(hk){const l=hk.dataset.hmk;HST.marks[l]?(delete HST.marks[l],hAct(l,'Sent unmarked')):(HST.marks[l]=hStamp(),hAct(l,'Marked sent'));render();hSave();return}
+ const hh=e.target.closest('[data-hho]');if(hh){const l=hh.dataset.hho;HST.hold[l]?(delete HST.hold[l],hAct(l,'Back to pending')):(HST.hold[l]=hStamp(),hAct(l,'Put on hold'));render();hSave();return}
  const rs=e.target.closest('[data-hrs]');if(rs){delete HST.rems[rs.dataset.hrs];render();hSave();return}
  const ad=e.target.closest('[data-hadd]');if(ad){const l=$('haL').value.replace(/\D/g,'').padStart(5,'0'),i=$('haI').value.trim(),sp=$('haS').value.trim(),p=$('haP').value.replace(/\D/g,''),t=$('haT').value.split('\n').map(x=>x.trim()).filter(Boolean);
   if(!/^\d{5}$/.test(l)||!i||!sp){$('haE').textContent='Enter the LPO number, island and supplier.';return}
